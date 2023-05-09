@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Scraper BCA Mutasi</title>
+  </head>
+  <body>
+    <h1>Scraper BCA Mutasi</h1>
+    <form id="scraper-form">
+      <label for="username">BCA Username:</label><br>
+      <input type="text" id="username" name="username"><br>
+      <label for="password">BCA Password:</label><br>
+      <input type="password" id="password" name="password"><br>
+      <label for="tglawal">Tanggal awal:</label><br>
+      <input type="text" id="tglawal" name="tglawal"><br>
+      <label for="blnawal">Bulan awal:</label><br>
+      <input type="text" id="blnawal" name="blnawal"><br>
+      <label for="tglakhir">Tanggal akhir:</label><br>
+      <input type="text" id="tglakhir" name="tglakhir"><br>
+      <label for="blnakhir">Bulan akhir:</label><br>
+      <input type="text" id="blnakhir" name="blnakhir"><br><br>
+      <button type="submit">Submit</button>
+    </form>
+    <p id="result"></p>
+    <script>
+      const form = document.getElementById("scraper-form");
+      const result = document.getElementById("result");
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+
+        try {
+          const response = await fetch("/mutasi", {
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: {
+              "Content-Type": "application/json"
+            }
+          });
+          const resultText = await response.text();
+          result.textContent = resultText;
+        } catch (error) {
+          console.error(error);
+          result.textContent = "Error occurred while fetching data.";
+        }
+      });
+    </script>
+  </body>
+</html>
